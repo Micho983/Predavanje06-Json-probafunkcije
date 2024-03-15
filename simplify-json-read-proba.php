@@ -17,15 +17,34 @@
         "email" => "pero@pero.com",
     ];
     function checkNameStudents($students_data) {
-         foreach ($students_data as $students) { 
-            if ($students["name"] === "Pero" && $students["surname"] === "Perić") {
-                 echo "Student exits in database";
-                 } 
-             else { ($students = json_encode($students_data) && file_put_contents( __DIR__."/polaznici_proba.json", $students) ); 
-             }
-     }
-    };
-
+        // Decode the JSON data into an associative array
+        $students_data = json_decode($students_data, true);
+        
+        // Check each student for the name "Pero"
+        foreach ($students_data as $student) {
+            if ($student["name"] === "Pero") {
+                echo "Pero is in the database."; // Display message
+                // Optionally perform additional operations here if needed
+                
+                return true; // Return true immediately if "Pero" is found
+            }
+        }
+        
+        // If "Pero" was not found, re-encode the data to JSON and write it back to the file
+        $students = json_encode($students_data);
+        if (false === $students) {
+            die('Error encoding data to JSON');
+        }
+    
+        $filepath = __DIR__ . "/polaznici.json";
+        if (false === file_put_contents($filepath, $students)) {
+            die('Unable to write to file!');
+        }
+        
+        // "Pero" was not found and the data is written back to the file
+        // It might be more appropriate to do nothing or take another action here
+        return false;
+    }
     //encode the array of students
    // $students = json_encode($students_data);
 
